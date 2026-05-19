@@ -26,6 +26,10 @@ class ExampleTest extends TestCase
         // Comprobamos el resultado esperado
         $this->assertEquals(13, $result);
         $this->assertGraterThan(0, $result);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 33e2539 (Guardando cambios antes de moverme a main)
 
     }
 }
