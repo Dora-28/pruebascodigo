@@ -17,7 +17,7 @@ class ExampleTest extends TestCase
         $controller = new OperationsController;
 
         // Ejecutamos el método (los argumentos nombrados a: y b: están perfectos para PHP 8+)
-        $result = $controller->addition( 4, 9);
+        $result = $controller->addition(4, 9);
 
         // 2. CORRECCIÓN: El método correcto es assertIsInt
         $this->assertIsInt($result);
