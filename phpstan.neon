@@ -1,0 +1,14 @@
+# Configuración de Larastan / PHPStan para el proyecto
+
+includes:
+    # Vincula las reglas y la "inteligencia" específica de Laravel para que PHPStan no marque falsos positivos
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    # Define las carpetas que Larastan va a escanear en busca de errores
+    paths:
+        - app # Escanea la lógica principal (Controladores, Modelos, etc.)
+
+    # Nivel de estrictez del análisis (Va de 0 a 9)
+    # El nivel 5 es ideal para revisar tipos de datos y llamadas a métodos correctos
+    level: 5
