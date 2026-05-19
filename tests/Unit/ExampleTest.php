@@ -15,21 +15,10 @@ class ExampleTest extends TestCase
     {
         // Instanciamos el controlador
         $controller = new OperationsController;
-
-        // Ejecutamos el método (los argumentos nombrados a: y b: están perfectos para PHP 8+)
-        $result = $controller->addition(a: 4, b: 9);
-
-        // 2. CORRECCIÓN: El método correcto es assertIsInt
+        $result = $controller->addition(4, 9);
         $this->assertIsInt($result);
         $this->assertNotNull($result);
-
-        // Comprobamos el resultado esperado
         $this->assertEquals(13, $result);
-        $this->assertGraterThan(0, $result);
-<<<<<<< HEAD
-=======
-
->>>>>>> 33e2539 (Guardando cambios antes de moverme a main)
-
+        $this->assertGreaterThan(0, $result);
     }
 }
