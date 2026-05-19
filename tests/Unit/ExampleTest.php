@@ -22,8 +22,6 @@ class ExampleTest extends TestCase
         // 2. CORRECCIÓN: El método correcto es assertIsInt
         $this->assertIsInt($result);
         $this->assertNotNull($result);
-
-        // Comprobamos el resultado esperado
         $this->assertEquals(13, $result);
         $this->assertGreaterThan(0, $result);
 
