@@ -15,7 +15,7 @@ class ExampleTest extends TestCase
     {
         // Instanciamos el controlador
         $controller = new OperationsController;
-      
+
         // Ejecutamos el método (los argumentos nombrados a: y b: están perfectos para PHP 8+)
         $result = $controller->addition(4, 9);
 
