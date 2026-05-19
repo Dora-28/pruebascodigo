@@ -10,32 +10,18 @@ jobs:
   static-analysis:
     runs-on: ubuntu-latest
 
-    # Levanta un servidor MySQL temporal en el contenedor de GitHub Actions
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: miprimerproyecto
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
-      # 1. Clonar el repositorio
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar la versión de PHP y sus extensiones necesarias
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2.12'
+          php-version: '8.3'
           extensions: mbstring, intl, pdo_mysql
           coverage: none
           tools: composer
 
-      # 3. Cachear las dependencias de Composer para que el pipeline corra más rápido
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
@@ -44,42 +30,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
-      # 4. Instalar las dependencias del proyecto (Optimizado a un solo paso)
-      - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --no-interaction
+      - name: Install Composer dependencies
+        run: composer install
 
-      # 5. Configurar entorno y ejecutar migraciones en la base de datos de pruebas
       - name: Set up the database
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: miprimerproyecto
-          DB_USERNAME: root
-          DB_PASSWORD: ""
         run: |
           cp .env.example .env
           php artisan key:generate
           php artisan migrate --env=testing
 
-      # 6. Ejecutar las pruebas automatizadas (Tests)
-      - name: Run tests
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: miprimerproyecto
-          DB_USERNAME: root
-          DB_PASSWORD: ""
-        run: |
-          php artisan test
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --no-interaction
 
-      # 7. Ejecutar Laravel Pint (Verificación de estilo de código)
+      # ---------- Run Tests ----------
+      - name: Run tests
+        run: php artisan test
+
+      # ---------- Laravel Pint (code style) ----------
       - name: Run Laravel Pint
         run: |
           vendor/bin/pint --test
 
-      # 8. Ejecutar el análisis estático con PHPStan / Larastan
+      # ---------- PHPStan / Larastan ----------
       - name: Run PHPStan (Larastan)
         run: |
           vendor/bin/phpstan analyse --configuration=phpstan.neon
